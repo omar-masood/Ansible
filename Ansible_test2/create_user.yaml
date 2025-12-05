@@ -1,0 +1,25 @@
+---
+- name: creating users
+  hosts: all
+  become: yes
+  vars_files:
+    - user_list.yaml                                                                                                                                                                                                                                                  
+  tasks:
+    - name: create admin groups
+      ansible.builtin.group:
+        name: admin
+        state: present
+
+    - name: create member group
+      ansible.builtin.group:
+        name: members
+        state: present
+
+    - name: Create users
+      ansible.builtin.user:
+        name: "{{ item.username }}"
+        uid: "{{ item.uid }}"
+        password: "{{ item.password | password_hash('sha512') }}"
+        group: "{{ item.group }}"
+        state: present
+      loop: "{{ users }}"

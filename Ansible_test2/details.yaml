@@ -1,0 +1,18 @@
+---
+- name: create file details.txt and gather info
+  hosts: all                                                                                                                                                                    
+  become: yes
+  tasks:
+
+    - name: create file details.txt
+      ansible.builtin.copy:
+        dest: /root/details.txt
+        content: |
+          HOSTNAME: {{ ansible_hostname }}
+          MEMORY_TOTAL: {{ ansible_memtotal_mb }}
+          MEMORY_FREE: {{ ansible_memfree_mb }}
+          IPV4: {{ ansible_default_ipv4.address }}
+          FQDN: {{ ansible_fqdn }}
+          SDA_DISK_SIZE: {{ ansible_devices.sda.partitions.sda1.size }}
+          SDC_DISK_SIZE: {% if ansible_devices.sdc is defined %}{{ ansible_devices.sdc.partitions.sdc1.size }}{% else %}NONE{% endif %}
+ 

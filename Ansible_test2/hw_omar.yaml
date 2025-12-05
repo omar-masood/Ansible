@@ -1,0 +1,44 @@
+---
+- name: create user webdir
+  hosts: webservers
+  become: yes
+  tasks:
+
+    - name: create user webdir
+      ansible.builtin.user:
+        name: webdir
+        state: present
+
+    - name: create directory with owner and permission
+      ansible.builtin.file:
+        path: /var/www/webdir
+        state: directory
+        owner: webdir
+        mode: '2755'
+
+    - name: Add contents to index.html
+      ansible.builtin.copy:
+        dest: /var/www/webdir/index.html
+        content: "I AM FROM WEBDIR"
+
+#- name: Create a symbolic link
+ # ansible.builtin.file:
+    #src: /var/www/html/index.html
+    #dest: /webdir/index.html
+    #state: link
+
+    - name: update httpd configuration
+      ansible.builtin.copy:
+        dest: /etc/httpd/conf.d/webdir.conf
+        content: |
+          Alias /webdir /var/www/webdir
+          <Directory /var/www/webdir>
+          Options Indexes FollowSymLinks
+          AllowOverride None
+          Require all granted
+          </Directory>
+
+    - name: restart httpd
+      ansible.builtin.service:
+        name: httpd
+        state: restarted

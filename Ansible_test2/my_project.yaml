@@ -1,0 +1,12 @@
+---
+- name: Ping node1
+  hosts: node1
+  become: yes
+  tasks:
+
+    - name: ping node1
+      ansible.builtin.ping:
+
+    - name: show if node1 is pinging
+      ansible.builtin.debug:
+        msg: "node1 is pinging"  

@@ -1,0 +1,13 @@
+[proxy]
+node1
+
+[webservers]
+node2
+d-node1
+
+[database]
+d-node2
+
+[prod:children]
+webservers
+

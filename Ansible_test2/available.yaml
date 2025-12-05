@@ -1,0 +1,12 @@
+---     
+- name: checking file availibility
+  hosts: all
+  become: yes
+  tasks:
+  - name: Check if file exists
+    ansible.builtin.stat:
+       path: /root/details.txt                                                                                                                                                         
+    register: details
+  - name: Print message if file exists
+    ansible.builtin.debug:
+        msg: "{%if details.stat.exists %}File Exists {%else%}File does not exist{%endif%}"
