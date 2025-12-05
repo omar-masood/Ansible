@@ -1,0 +1,37 @@
+---
+- name: Install necessary packages
+  hosts: dev,test
+  become: true
+  vars:
+    packages:
+      - vim
+      - net-tools
+      - bind-utils
+      - mlocate
+      - epel-release
+      - php
+      - mariadb-server
+  tasks:
+    - name: install all packages
+      ansible.builtin.dnf:
+        name: "{{ packages }} " 
+        state: present
+
+
+- name: install group package
+  hosts: prod
+  become: true
+  tasks:
+    - name: Install the 'Development tools' package group
+      ansible.builtin.dnf:                               
+        name: '@Development tools'                         
+        state: present
+
+- name: Update all packages in dev group
+  hosts: dev
+  become: true
+  tasks:
+    - name: update all packages
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest

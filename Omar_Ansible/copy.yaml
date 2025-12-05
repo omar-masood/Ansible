@@ -1,0 +1,13 @@
+---
+- name: copy inventory
+  hosts: node1
+  tasks: 
+    - name: copy a file to server
+      ansible.builtin.copy:
+        src: /home/student/ansible/inventory
+        dest: /home/student
+        owner: student
+        group: student
+        follow: yes
+
+...

@@ -1,0 +1,16 @@
+---
+- name: shopping calculator
+  hosts: node1
+  become: yes
+
+  vars:
+    apple: 2
+    cherry: 3
+    banana: 4
+
+  tasks:
+    - name: sending sum of numbers
+      copy:
+        content: "Apple and Cherry cost ${{ 2*apple + 5*cherry }}"
+        dest: /home/student/simple.txt
+

@@ -1,0 +1,21 @@
+---
+- name: Create user
+  hosts: dev
+  become: true
+  tasks: 
+    
+    - name: Create user alex
+      ansible.builtin.user:
+        name: alex
+        state: absent
+
+    - name: create groups
+      ansible.builtin.group:
+        name: devops
+        state: present
+
+    - name: create manager
+      ansible.builtin.group:
+        name: manager
+        state: present
+...

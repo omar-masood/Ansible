@@ -1,0 +1,32 @@
+---
+- name: configure web server
+  hosts: node1
+  become: true
+  tasks: 
+    - name: install httpd
+      ansible.builtin.dnf:
+        name: httpd
+        state: latest
+
+    - name: services
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enable: true     # use true or yes for all of the block
+
+    - name: firewall install
+      ansible.legacy.systemd:
+        service: httpd
+        state: enabled
+        permanent: true
+        immediate: true
+
+    - name: content
+      ansible.builtin.copy:
+        content: "hello from ziyotek"
+        dest: /var/www/html/index.html
+
+    - name: restart httpd
+      ansible.builtin.service:
+        name: httpd
+        state: restarted

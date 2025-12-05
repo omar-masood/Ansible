@@ -1,0 +1,13 @@
+---
+- name: Fix DNS on all nodes
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Set working DNS servers
+      ansible.builtin.copy:
+        dest: /etc/resolv.conf
+        content: |
+          nameserver 8.8.8.8
+          nameserver 1.1.1.1
+

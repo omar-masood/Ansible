@@ -1,0 +1,69 @@
+---                
+
+- name: creating webservers
+
+  hosts: webservers                                                                           
+
+  become: yes      
+
+  tasks:           
+
+    - name: Install httpd
+
+      ansible.builtin.dnf:
+
+        name: httpd
+
+        state: present
+
+    - name: Create web directories
+
+      ansible.builtin.file:
+
+        path: /var/www/html/site{{ item }}
+
+        state: directory
+
+      loop:        
+
+        - 1        
+
+        - 2        
+
+        - 3        
+
+    - name: Create webpage 1
+
+      ansible.builtin.copy:
+
+        dest: /var/www/html/site1/index.html
+
+        content: "<h1>This is Web Page 1</h1>"
+
+    - name: Create webpage 2
+
+      ansible.builtin.copy:
+
+        dest: /var/www/html/site2/index.html
+
+        content: "<h1>This is Web Page 2</h1>"
+
+    - name: Create webpage 3
+
+      ansible.builtin.copy:
+
+        dest: /var/www/html/site3/index.html
+
+        content: "<h1>This is Web Page 3</h1>"
+
+    - name: Start and enable httpd
+
+      ansible.builtin.service:
+
+        name: httpd
+
+        state: started
+
+        enabled: yes
+ 
+

@@ -1,0 +1,31 @@
+---
+- hosts: loadbalancer
+  become: yes
+
+  tasks:
+
+    - name: Install EPEL repository (required on Rocky/RHEL)
+      ansible.builtin.package:
+        name: epel-release
+        state: present
+
+    - name: Install HAProxy
+      ansible.builtin.package:
+        name: haproxy
+        state: present
+
+    - name: Deploy HAProxy configuration from template
+      ansible.builtin.template:
+        src: haproxy.cfg.j2
+        dest: /etc/haproxy/haproxy.cfg
+        mode: '0644'
+
+    - name: Reload systemd to pick up new service files
+      ansible.builtin.shell: systemctl daemon-reload
+
+    - name: Ensure HAProxy is started and enabled
+      ansible.builtin.service:
+        name: haproxy
+        state: started
+        enabled: yes
+

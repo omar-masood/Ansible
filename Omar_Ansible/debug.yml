@@ -1,0 +1,14 @@
+---
+- name: learn debug module
+  hosts: dev
+  tasks:
+    - name: debug
+      ansible.builtin.debug:
+        msg: "Hello World"
+ 
+- name: learn debug module
+  hosts: dev
+  tasks:
+    - name: debug
+      ansible.builtin.debug:
+        var: "This servername is {{ inventory_hostname }} has IP of {{ ansible_default_ipv4.address }}"
