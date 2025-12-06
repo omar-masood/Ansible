@@ -1,0 +1,14 @@
+---
+- name: install
+  hosts: node1
+  tasks:
+    - name: install a package
+      ansible.builtin.dnf:
+        name: httpd
+        state: latest
+      when: ansible_distribution == 'ubuntu'
+      register: output
+
+    - name: see the output
+      ansible.builtin.debug:
+        var: output

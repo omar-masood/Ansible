@@ -1,25 +1,40 @@
 ---
-- name: creating users
-  hosts: all
-  become: yes
+- name: Create user
+  hosts: proxy
   vars_files:
-    - user_list.yaml                                                                                                                                                                                                                                                  
+    - user_list.yaml
+    - vault.yaml
+ 
   tasks:
-    - name: create admin groups
-      ansible.builtin.group:
-        name: admin
-        state: present
-
-    - name: create member group
-      ansible.builtin.group:
-        name: members
-        state: present
-
+ 
     - name: Create users
       ansible.builtin.user:
-        name: "{{ item.username }}"
+        name: "{{ item.name }}"
         uid: "{{ item.uid }}"
-        password: "{{ item.password | password_hash('sha512') }}"
-        group: "{{ item.group }}"
+        password: "{{ pw_developer | password_hash('sha512') }}"
+        update_password: on_create
         state: present
       loop: "{{ users }}"
+      when: item.job == "developer" and inventory_hostname in groups['test']
+ 
+ 
+    - name: Create users
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        uid: "{{ item.uid }}"
+        password: "{{ pw_manager | password_hash('sha512') }}"
+        update_password: on_create
+        state: present
+      loop: "{{ user }}"
+      when: item.job == "manager" and inventory_hostname in groups['test']
+ 
+    - name: create groups devops
+      ansible.builtin.group:
+        name: devops
+        state: present
+ 
+    - name: create groups manager
+      ansible.builtin.group:
+        name: manager
+        state: present
+...

@@ -1,12 +1,17 @@
 ---
-- name: Ping node1
-  hosts: node1
+- name: Ping all nodes
+  hosts: all
   become: yes
+  vars:
+    messages:
+      - "all servers are pinging"
+      - "everything looks good"
   tasks:
 
-    - name: ping node1
+    - name: ping all nodes
       ansible.builtin.ping:
 
-    - name: show if node1 is pinging
+    - name: show all messages
       ansible.builtin.debug:
-        msg: "node1 is pinging"  
+        msg: "{{ item }}"
+      loop: "{{ messages }}"

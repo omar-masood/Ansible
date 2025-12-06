@@ -2,19 +2,15 @@
 users:
   - username: eli
     uid: 1201
-    password: abcdeXYZ
     group: admin
   - username: vincent
     uid: 1202
-    password: cdefgXYZ
     group: admin
   - username: sandy
     uid: 2201
-    password: edfegZBC
     group: members
   - username: patrick
     uid: 2202
-    password: gjfezBCG
     group: members
  
  
